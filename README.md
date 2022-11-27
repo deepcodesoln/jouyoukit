@@ -5,6 +5,8 @@ The Jouyou Kit (`jyk`) is a toolkit for querying information about the
 
 # Usage
 
+This library requires Python 3.9 or newer.
+
 Make calls into the library:
 
 ```py
@@ -17,7 +19,15 @@ query.is_jouyou("猫")
 
 Install the development requirements, and then set up the pre-commit hooks.
 
-```py
+```
 pip install -r requirements.dev.txt
 pre-commit install
+```
+
+## Running Tests
+
+Run `pytest` as a module to make sure you use the correct Python version.
+
+```
+python3 -m pytest tests
 ```
