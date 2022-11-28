@@ -20,3 +20,7 @@ JOUYOU_TABLE_ROW_NAMES = [
     "grade",
     "frequency",
 ]
+
+
+class TableDoesNotExist(Exception):
+    pass

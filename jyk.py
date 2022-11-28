@@ -1,7 +1,8 @@
 import argparse
+import sys
 
 
-from db.db import extend_args as db_extend_args
+from db.main import extend_args as db_extend_args
 
 
 def main():
@@ -9,8 +10,10 @@ def main():
     subparsers = parser.add_subparsers()
     db_extend_args(subparsers)
     args = parser.parse_args()
-    args.func(args)
+    return args.func(args)
 
 
 if __name__ == "__main__":
-    main()
+    retcode = main()
+    if retcode:
+        sys.exit(retcode)

@@ -14,6 +14,9 @@ class Reading(NamedTuple):
     reading: str
     is_jouyou: Optional[bool]
 
+    def __str__(self):
+        return reading
+
 
 class Kanji(NamedTuple):
     # The literal character for the kanji.
@@ -39,3 +42,14 @@ class Kanji(NamedTuple):
     # The frequency among the 2,500 most common kanji found in newspapers. `None`
     # indicates that the kanji is outside of this group. 1 indicates the most frequent.
     frequency: Optional[int]
+
+    def __str__(self):
+        return (
+            f"{self.kanji}: "
+            f"radical: {self.radical}; "
+            f"onyomi: {', '.join([reading.reading for reading in self.onyomi])}; "
+            f"kunyomi: {', '.join([reading.reading for reading in self.kunyomi])}; "
+            f"meanings: {', '.join(self.meanings)}; "
+            f"grade: {self.grade}; "
+            f"frequency: {self.frequency}"
+        )
