@@ -15,6 +15,15 @@ from libjyk import query
 query.is_jouyou("猫")
 ```
 
+Use the CLI:
+
+```
+python3 jyk.py -h
+
+python3 jyk.py db --build path/to/kanjidic2.xml
+python3 jyk.py db --query-kanji 猫
+```
+
 # Development
 
 Install the development requirements, and then set up the pre-commit hooks.
