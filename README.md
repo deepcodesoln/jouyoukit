@@ -31,3 +31,7 @@ Run `pytest` as a module to make sure you use the correct Python version.
 ```
 python3 -m pytest tests
 ```
+
+# License
+
+[MIT license](./LICENSE.md).
