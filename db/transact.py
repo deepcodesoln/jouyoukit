@@ -64,3 +64,19 @@ def get_kanji(literal: str) -> Optional[Kanji]:
     res = cursor.execute(f"SELECT * from {JOUYOU_TABLE_NAME} WHERE kanji='{literal}'")
     entry = res.fetchone()
     return _row_to_kanji(entry) if entry else None
+
+
+def get_kanji_by_grade(grade: Optional[int]) -> list[Kanji]:
+    """
+    :param grade: The grade to filter kanji by. Must be one of
+        {1, 2, 3, 4, 5, 6, 8, None}.
+    :type grade: Optional[int]
+    """
+    assert grade in {1, 2, 3, 4, 5, 6, 8, None}, f"Unsupported grade: {grade}."
+
+    conn = sqlite3.connect(os.path.expanduser(JYK_DEFAULT_DB))
+    _assert_table_exists(conn)
+
+    cursor = conn.cursor()
+    res = cursor.execute(f"SELECT * from {JOUYOU_TABLE_NAME} WHERE grade={grade}")
+    return [_row_to_kanji(r) for r in res.fetchall()]
