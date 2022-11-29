@@ -3,8 +3,8 @@ import xml
 import xml.etree.ElementTree as ET
 
 from libjyk.kangxi_radicals import KANGXI_RADICALS
+from libjyk.kanji import Kanji, Reading
 from libjyk.logging import LIBJYK_LOGGER_NAME
-from libjyk.parser.kanji import Kanji, Reading
 
 
 def _log_header(e: xml.etree.ElementTree.Element):

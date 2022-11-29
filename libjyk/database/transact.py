@@ -8,13 +8,13 @@ import pickle
 import sqlite3
 from typing import Optional
 
-from db.pathing import JYK_DEFAULT_DB
-from libjyk.database import (
+from libjyk.database.database import (
     JOUYOU_TABLE_NAME,
     JOUYOU_TABLE_ROW_SCHEMA,
     TableDoesNotExist,
 )
-from libjyk.parser.kanji import Kanji
+from libjyk.database.pathing import JYK_DEFAULT_DB
+from libjyk.kanji import Kanji
 
 
 def _assert_table_exists(conn):

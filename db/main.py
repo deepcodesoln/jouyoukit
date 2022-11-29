@@ -1,6 +1,6 @@
-from db.build import build
-from db.transact import get_kanji, get_kanji_by_grade
-from libjyk.database import TableDoesNotExist
+from libjyk.database.build import build
+from libjyk.database.database import TableDoesNotExist
+from libjyk.database.transact import get_kanji, get_kanji_by_grade
 
 
 def extend_args(subparsers):
