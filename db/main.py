@@ -1,6 +1,11 @@
 from libjyk.database.build import build
 from libjyk.database.database import TableDoesNotExist
-from libjyk.database.transact import KANJI_GRADES, get_kanji, get_kanji_by_grade
+from libjyk.database.transact import (
+    KANJI_GRADES,
+    SUPPORTED_SORT,
+    get_kanji,
+    get_kanji_by_grade,
+)
 
 
 def extend_args(subparsers):
@@ -30,6 +35,12 @@ def extend_args(subparsers):
         help=f"Search the database for all kanji of a specific grade; choices: {KANJI_GRADES}",
     )
 
+    parser.add_argument(
+        "--sort-by",
+        choices=SUPPORTED_SORT,
+        help="The kanji property to sort by for queries that return more than 1 result",
+    )
+
     parser.set_defaults(func=_main)
 
 
@@ -44,7 +55,7 @@ def _main(args) -> int:
         elif args.query_kanji:
             print(get_kanji(args.query_kanji))
         elif args.get_kanji_by_grade:
-            for kanji in get_kanji_by_grade(args.get_kanji_by_grade):
+            for kanji in get_kanji_by_grade(args.get_kanji_by_grade, args.sort_by):
                 print(kanji)
     except TableDoesNotExist:
         print("The jouyou toolkit database does not exist. Try `jyk.py db --build`.")

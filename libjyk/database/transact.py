@@ -21,6 +21,10 @@ from libjyk.kanji import Kanji
 KANJI_GRADES = [1, 2, 3, 4, 5, 6, 8]
 
 
+"""A list of supported database columns to sort by."""
+SUPPORTED_SORT = ["frequency"]
+
+
 def _assert_table_exists(conn):
     """
     Check that the jouyou toolkit database exists.
@@ -70,10 +74,12 @@ def get_kanji(literal: str) -> Optional[Kanji]:
     return _row_to_kanji(entry) if entry else None
 
 
-def get_kanji_by_grade(grade: int) -> list[Kanji]:
+def get_kanji_by_grade(grade: int, sort_by: Optional[str]) -> list[Kanji]:
     """
     :param grade: The grade to filter kanji by. Must be one of KANJI_GRADES.
     :type grade: int
+    :param sort_by: The column name to sort query results by. `None` indicates no sort.
+    :type sort_by: Optional[str]
     """
     assert grade in KANJI_GRADES, f"Unsupported grade: {grade}."
 
@@ -81,5 +87,8 @@ def get_kanji_by_grade(grade: int) -> list[Kanji]:
     _assert_table_exists(conn)
 
     cursor = conn.cursor()
-    res = cursor.execute(f"SELECT * from {JOUYOU_TABLE_NAME} WHERE grade={grade}")
+    sort = f"ORDER BY IFNULL({sort_by}, 9999)" if sort_by else ""
+    res = cursor.execute(
+        f"SELECT * from {JOUYOU_TABLE_NAME} WHERE grade={grade} {sort}"
+    )
     return [_row_to_kanji(r) for r in res.fetchall()]
