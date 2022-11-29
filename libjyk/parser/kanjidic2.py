@@ -81,26 +81,25 @@ def _parse_kanji(e: xml.etree.ElementTree.Element) -> Kanji:
 
     for rmgroup in reading_meaning.iter("rmgroup"):
         for reading in rmgroup.iter("reading"):
+            is_jouyou = None
             if reading.attrib["r_type"] == "ja_on":
                 if "r_status" in reading.attrib:
-                    jy = reading.attrib["r_status"] == "jy"
-                else:
-                    jy = None
-                onyomi.append(Reading(reading.text, jy))
+                    is_jouyou = reading.attrib["r_status"] == "jy"
+                onyomi.append(Reading(reading.text, is_jouyou))
             elif reading.attrib["r_type"] == "ja_kun":
                 if "r_status" in reading.attrib:
-                    jy = reading.attrib["r_status"] == "jy"
-                else:
-                    jy = None
+                    is_jouyou = reading.attrib["r_status"] == "jy"
                 if "." in reading.text:
                     read = reading.text.split(".")[0]
                 else:
                     read = reading.text
-                # TODO(orphen) Filter out duplicates resulting from processing `.`.
-                kunyomi.append(Reading(read, jy))
+                kunyomi.append(Reading(read, is_jouyou))
         for meaning in rmgroup.iter("meaning"):
             if "m_lang" not in meaning.attrib or meaning.attrib["m_lang"] == "en":
                 meanings.append(meaning.text)
+
+        # Filter out duplicate kunyomi readings resulting from how we handled `.`.
+        kunyomi = list(dict.fromkeys(kunyomi))
 
     return Kanji(kanji, radical, onyomi, kunyomi, meanings, grade, frequency)
 

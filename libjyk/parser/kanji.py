@@ -17,6 +17,17 @@ class Reading(NamedTuple):
     def __str__(self):
         return reading
 
+    def __hash__(self):
+        # Allow hash collisions for two Readings with the same `reading` but different
+        # `is_jouyou` values. Readings are identical if their `reading`s are the same.
+        return hash(self.reading)
+
+    def __eq__(self, other):
+        # Disregard `is_jouyou` is equality check.
+        # TODO(orphen) Revisit this decision since this behavior is perhaps more
+        # surprising than `self.__hash__`.
+        return self.reading == other.reading
+
 
 class Kanji(NamedTuple):
     # The literal character for the kanji.
