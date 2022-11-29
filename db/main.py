@@ -1,6 +1,6 @@
 from libjyk.database.build import build
 from libjyk.database.database import TableDoesNotExist
-from libjyk.database.transact import get_kanji, get_kanji_by_grade
+from libjyk.database.transact import KANJI_GRADES, get_kanji, get_kanji_by_grade
 
 
 def extend_args(subparsers):
@@ -19,11 +19,15 @@ def extend_args(subparsers):
         metavar="kanji",
         help="Search the database for a specific kanji",
     )
+    # TODO(orphen) Generalize query CLI: one command, various filters.
     actions.add_argument(
         "--get-kanji-by-grade",
         metavar="grade",
         type=int,
-        help="Search the database for all kanji of a specific grade",
+        choices=KANJI_GRADES,
+        # `choices` is not present in help text for items in mutually exclusive groups,
+        # so we add it here.
+        help=f"Search the database for all kanji of a specific grade; choices: {KANJI_GRADES}",
     )
 
     parser.set_defaults(func=_main)

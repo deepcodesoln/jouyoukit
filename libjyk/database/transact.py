@@ -17,6 +17,10 @@ from libjyk.database.pathing import JYK_DEFAULT_DB
 from libjyk.kanji import Kanji
 
 
+"""A list of school grades in which kanji are taught. 8 indicates secondary school."""
+KANJI_GRADES = [1, 2, 3, 4, 5, 6, 8]
+
+
 def _assert_table_exists(conn):
     """
     Check that the jouyou toolkit database exists.
@@ -66,13 +70,12 @@ def get_kanji(literal: str) -> Optional[Kanji]:
     return _row_to_kanji(entry) if entry else None
 
 
-def get_kanji_by_grade(grade: Optional[int]) -> list[Kanji]:
+def get_kanji_by_grade(grade: int) -> list[Kanji]:
     """
-    :param grade: The grade to filter kanji by. Must be one of
-        {1, 2, 3, 4, 5, 6, 8, None}.
-    :type grade: Optional[int]
+    :param grade: The grade to filter kanji by. Must be one of KANJI_GRADES.
+    :type grade: int
     """
-    assert grade in {1, 2, 3, 4, 5, 6, 8, None}, f"Unsupported grade: {grade}."
+    assert grade in KANJI_GRADES, f"Unsupported grade: {grade}."
 
     conn = sqlite3.connect(os.path.expanduser(JYK_DEFAULT_DB))
     _assert_table_exists(conn)
