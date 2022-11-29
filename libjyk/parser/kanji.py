@@ -1,8 +1,8 @@
 """This module contains a types representing Kanji and their metadata."""
 
-from typing import Optional
+from typing import NamedTuple, Optional
 
-from typing import NamedTuple
+from libjyk.kangxi_radicals import Radical
 
 
 class Reading(NamedTuple):
@@ -23,7 +23,7 @@ class Kanji(NamedTuple):
     kanji: str
 
     # The literal Kangxi character for the kanji's radical.
-    radical: str
+    radical: Radical
 
     # A list of on'yomi readings.
     onyomi: list[Reading]

@@ -40,7 +40,7 @@ def _row_to_kanji(row: JOUYOU_TABLE_ROW_SCHEMA) -> Kanji:
     """
     return Kanji(
         row[0],
-        row[1],
+        pickle.loads(row[1], fix_imports=False),
         pickle.loads(row[2], fix_imports=False),
         pickle.loads(row[3], fix_imports=False),
         pickle.loads(row[4], fix_imports=False),

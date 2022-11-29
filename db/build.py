@@ -26,7 +26,7 @@ def _kanji_to_row(kanji: Kanji) -> JOUYOU_TABLE_ROW_SCHEMA:
     """
     return (
         kanji.kanji,
-        kanji.radical,
+        pickle.dumps(kanji.radical, fix_imports=False),
         pickle.dumps(kanji.onyomi, fix_imports=False),
         pickle.dumps(kanji.kunyomi, fix_imports=False),
         pickle.dumps(kanji.meanings, fix_imports=False),
