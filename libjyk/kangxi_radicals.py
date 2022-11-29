@@ -11,11 +11,8 @@ class Radical(NamedTuple):
     meanings: list[str]
 
     def __str__(self):
-        return (
-            f"{self.radical} "
-            f"({', '.join(self.variants)}) "
-            f"({', '.join(self.meanings)})"
-        )
+        variants = f"({', '.join(self.variants)}) " if self.variants else ""
+        return f"{self.radical} {variants}({', '.join(self.meanings)})"
 
 
 """
