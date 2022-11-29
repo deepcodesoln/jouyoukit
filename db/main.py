@@ -6,6 +6,7 @@ from libjyk.database.transact import (
     get_kanji,
     get_kanji_by_grade,
 )
+from libjyk.format import SUPPORTED_FORMATS, kanji_list_to_csv
 
 
 def extend_args(subparsers):
@@ -40,6 +41,11 @@ def extend_args(subparsers):
         choices=SUPPORTED_SORT,
         help="The kanji property to sort by for queries that return more than 1 result",
     )
+    parser.add_argument(
+        "--format-as",
+        choices=SUPPORTED_FORMATS,
+        help="Convert tool output to a particular format",
+    )
 
     parser.set_defaults(func=_main)
 
@@ -53,10 +59,17 @@ def _main(args) -> int:
         if args.build:
             build(args.build)
         elif args.query_kanji:
-            print(get_kanji(args.query_kanji))
+            kanji = get_kanji(args.query_kanji)
+            out = kanji_list_to_csv([kanji]) if args.format_as == "csv" else kanji
+            print(out)
         elif args.get_kanji_by_grade:
-            for kanji in get_kanji_by_grade(args.get_kanji_by_grade, args.sort_by):
-                print(kanji)
+            kanji = get_kanji_by_grade(args.get_kanji_by_grade, args.sort_by)
+            if args.format_as == "csv":
+                out = kanji_list_to_csv(kanji)
+                print(out)
+            else:
+                for k in kanji:
+                    print(k)
     except TableDoesNotExist:
         print("The jouyou toolkit database does not exist. Try `jyk.py db --build`.")
         return 1
