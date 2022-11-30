@@ -14,6 +14,23 @@ class Radical(NamedTuple):
         variants = f"({', '.join(self.variants)}) " if self.variants else ""
         return f"{self.radical} {variants}({', '.join(self.meanings)})"
 
+    def __hash__(self):
+        s = self.radical
+        for v in self.variants:
+            s += v
+        for m in self.meanings:
+            s += m
+        return hash(s)
+
+    def __eq__(self, other):
+        return all(
+            (
+                self.radical == other.radical,
+                self.variants == other.variants,
+                self.meanings == other.meanings,
+            )
+        )
+
 
 """
 A list of Kangxi radicals where the index in the list corresponds to the official

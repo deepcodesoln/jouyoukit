@@ -6,7 +6,7 @@ from libjyk.database.transact import (
     get_kanji,
     get_kanji_by_grade,
 )
-from libjyk.format import SUPPORTED_FORMATS, kanji_list_to_csv
+from libjyk.format import SUPPORTED_FORMATS, kanji_list_to_csv, radical_list_to_csv
 
 
 def extend_args(subparsers):
@@ -34,6 +34,14 @@ def extend_args(subparsers):
         # `choices` is not present in help text for items in mutually exclusive groups,
         # so we add it here.
         help=f"Search the database for all kanji of a specific grade; choices: {KANJI_GRADES}",
+    )
+    actions.add_argument(
+        "--get-unique-radicals-for-level",
+        metavar="level",
+        type=int,
+        choices=KANJI_GRADES,
+        # Add `choices` in help text as we do for `--get-kanji-by-grade`.
+        help="Get all unique radicals for all kanji by grade; choices: {KANJI_CHOICES}",
     )
 
     parser.add_argument(
@@ -70,6 +78,20 @@ def _main(args) -> int:
             else:
                 for k in kanji:
                     print(k)
+        elif args.get_unique_radicals_for_level:
+            # TODO(orphen) Move this functionality into libjyk.
+            # As we cannot search the database for radicals directly, we have to
+            # operate on the list of all kanji for a specific grade.
+            kanji = get_kanji_by_grade(args.get_unique_radicals_for_level, args.sort_by)
+            radicals = set()
+            for k in kanji:
+                radicals.add(k.radical)
+            if args.format_as == "csv":
+                out = radical_list_to_csv(list(radicals))
+                print(out)
+            else:
+                for r in radicals:
+                    print(r)
     except TableDoesNotExist:
         print("The jouyou toolkit database does not exist. Try `jyk.py db --build`.")
         return 1
