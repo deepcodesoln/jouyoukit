@@ -36,7 +36,7 @@ def extend_args(subparsers):
         help=f"Search the database for all kanji of a specific grade; choices: {KANJI_GRADES}",
     )
     actions.add_argument(
-        "--get-unique-radicals-for-level",
+        "--get-radicals-for-level",
         metavar="level",
         type=int,
         choices=KANJI_GRADES,
@@ -78,7 +78,7 @@ def _main(args) -> int:
             else:
                 for k in kanji:
                     print(k)
-        elif args.get_unique_radicals_for_level:
+        elif args.get_radicals_for_level:
             # TODO(orphen) Move this functionality into libjyk.
             # As we cannot search the database for radicals directly, we have to
             # operate on the list of all kanji for a specific grade.
