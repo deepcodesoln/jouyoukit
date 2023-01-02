@@ -2,12 +2,12 @@ import os
 import pickle
 import sqlite3
 
-from libjyk.database.database import (
+from libjyk.jykdb.database import (
     JOUYOU_TABLE_NAME,
     JOUYOU_TABLE_ROW_NAMES,
     JOUYOU_TABLE_ROW_SCHEMA,
 )
-from libjyk.database.pathing import JYK_DEFAULT_DB
+from libjyk.jykdb.pathing import JYK_DEFAULT_DB
 from libjyk.jouyou_kanji import JOUYOU_KANJI
 from libjyk.kanji import Kanji
 from libjyk.parser.kanjidic2 import parse_kanjidic2

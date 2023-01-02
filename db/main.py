@@ -1,6 +1,6 @@
-from libjyk.database.build import build
-from libjyk.database.database import TableDoesNotExist
-from libjyk.database.transact import (
+from libjyk.jykdb.build import build
+from libjyk.jykdb.database import TableDoesNotExist
+from libjyk.jykdb.transact import (
     KANJI_GRADES,
     SUPPORTED_SORT,
     get_kanji,
