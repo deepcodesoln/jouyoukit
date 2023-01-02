@@ -14,7 +14,7 @@ from libjyk.jykdb import (
     JYK_DEFAULT_DB,
 )
 from libjyk.kanji import JOUYOU_KANJI, Kanji
-from libjyk.radicals import KANGXI_RADICALS
+from libjyk.radicals import KANGXI_RADICALS, Radical
 
 
 class TableDoesNotExist(Exception):
@@ -99,6 +99,29 @@ def get_kanji_for_grade(grade: int, sort_by: Optional[str]) -> list[Kanji]:
         f"SELECT * from {JOUYOU_TABLE_NAME} WHERE grade={grade} {sort}"
     )
     return [_row_to_kanji(r) for r in res.fetchall()]
+
+
+def get_radicals_for_grade(grade: int, sort_by: Optional[str]) -> list[Radical]:
+    """
+    :param grade: The grade to filter radicals by. Must be one of KANJI_GRADES.
+    :type grade: int
+    :param sort_by: The column name to sort query results by. `None` indicates no sort.
+    :type sort_by: Optional[str]
+    :return: A list of instances of Radical for a specific grade.
+    :rtype: list[Radical]
+    :raises TableDoesNotExist: Raised if the required jouyou database does not exist.
+    """
+    assert grade in KANJI_GRADES, f"Unsupported grade: {grade}."
+
+    conn = sqlite3.connect(os.path.expanduser(JYK_DEFAULT_DB))
+    _assert_table_exists(conn)
+
+    cursor = conn.cursor()
+    sort = f"ORDER BY IFULL({sort_by}, 9999)" if sort_by else ""
+    res = cursor.execute(
+        f"SELECT kangxi_radical from {JOUYOU_TABLE_NAME} WHERE grade={grade} {sort}"
+    )
+    return [KANGXI_RADICALS[r_code[0] - 1] for r_code in res.fetchall()]
 
 
 def is_jouyou(character: str) -> bool:

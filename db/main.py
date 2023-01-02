@@ -1,9 +1,10 @@
-import libjyk.jykdb
+from libjyk import jykdb
 from libjyk.query import (
     KANJI_GRADES,
     SUPPORTED_SORT,
     get_kanji,
     get_kanji_for_grade,
+    get_radicals_for_grade,
     TableDoesNotExist,
 )
 from libjyk.format import SUPPORTED_FORMATS, kanji_list_to_csv, radical_list_to_csv
@@ -79,15 +80,9 @@ def _main(args) -> int:
                 for k in kanji:
                     print(k)
         elif args.get_radicals_for_grade:
-            # TODO(orphen) Move this functionality into libjyk.
-            # As we cannot search the database for radicals directly, we have to
-            # operate on the list of all kanji for a specific grade.
-            kanji = get_kanji_for_grade(args.get_radicals_for_grade, args.sort_by)
-            radicals = set()
-            for k in kanji:
-                radicals.add(k.radical)
+            radicals = get_radicals_for_grade(args.get_radicals_for_grade, args.sort_by)
             if args.format_as == "csv":
-                out = radical_list_to_csv(list(radicals))
+                out = radical_list_to_csv(radicals)
                 print(out)
             else:
                 for r in radicals:
