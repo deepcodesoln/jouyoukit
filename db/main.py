@@ -6,6 +6,7 @@ from libjyk.query import (
     get_kanji_for_grade,
     get_radicals_for_grade,
     get_radicals_unique_to_grade,
+    get_radicals_introduced_in_grade,
     TableDoesNotExist,
 )
 from libjyk.format import SUPPORTED_FORMATS, kanji_list_to_csv, radical_list_to_csv
@@ -52,7 +53,17 @@ def extend_args(subparsers):
         # Add `choices` in help text as we do for `--get-kanji-for-grade`.
         help="Get all radicals unique to a specific grade; choices: {KANJI_GRADES}",
     )
-
+    actions.add_argument(
+        "--get-radicals-introduced-in-grade",
+        metavar="grade",
+        type=int,
+        choices=KANJI_GRADES,
+        # Add `choices` in help text as we do for `--get-kanji-for-grade`.
+        help=(
+            "Get all radicals new to some grade relative to all grades before; "
+            + "choices: {KANJI_GRADES}"
+        ),
+    )
     parser.add_argument(
         "--sort-by",
         choices=SUPPORTED_SORT,
@@ -98,6 +109,16 @@ def _main(args) -> int:
         elif args.get_radicals_unique_to_grade:
             radicals = get_radicals_unique_to_grade(
                 args.get_radicals_unique_to_grade, args.sort_by
+            )
+            if args.format_as == "csv":
+                out = radical_list_to_csv(radicals)
+                print(out)
+            else:
+                for r in radicals:
+                    print(r)
+        elif args.get_radicals_introduced_in_grade:
+            radicals = get_radicals_introduced_in_grade(
+                args.get_radicals_introduced_in_grade, args.sort_by
             )
             if args.format_as == "csv":
                 out = radical_list_to_csv(radicals)

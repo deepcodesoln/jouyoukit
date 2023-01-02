@@ -153,6 +153,43 @@ def get_radicals_unique_to_grade(grade: int, sort_by: Optional[str]) -> list[Rad
     return [KANGXI_RADICALS[r_code[0] - 1] for r_code in unique_radicals]
 
 
+def get_radicals_introduced_in_grade(
+    grade: int, sort_by: Optional[str]
+) -> list[Radical]:
+    """
+    :param grade: The grade to get radicals new to all grades before for. Must be one of
+                  KANJI_GRADES.
+    :type grade: int
+    :param sort_by: The column name to sort query results by. `None` indicates no sort.
+    :type sort_by: Optional[str]
+    :return: A list of instances of Radical new to all grades before `grade`.
+    :rtype: list[Radical]
+    :raises TableDoesNotExist: Raised if the required jouyou database does not exist.
+    """
+    assert grade in KANJI_GRADES, f"Unsupported grade: {grade}."
+
+    conn = sqlite3.connect(os.path.expanduser(JYK_DEFAULT_DB))
+    _assert_table_exists(conn)
+
+    cursor = conn.cursor()
+    sort = f"ORDER BY IFULL({sort_by}, 9999)" if sort_by else ""
+
+    new_radicals = cursor.execute(
+        f"SELECT kangxi_radical from {JOUYOU_TABLE_NAME} WHERE grade={grade} {sort}"
+    ).fetchall()
+    new_radicals = set(new_radicals)
+
+    for g in KANJI_GRADES:
+        if g == grade:
+            break
+        grade_radicals = cursor.execute(
+            f"SELECT kangxi_radical from {JOUYOU_TABLE_NAME} WHERE grade={g} {sort}"
+        ).fetchall()
+        new_radicals -= set(grade_radicals)
+
+    return [KANGXI_RADICALS[r_code[0] - 1] for r_code in new_radicals]
+
+
 def is_jouyou(character: str) -> bool:
     """
     Check whether a character is in the set of jouyou kanji.
