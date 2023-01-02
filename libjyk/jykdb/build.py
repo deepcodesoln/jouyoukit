@@ -7,11 +7,13 @@ from libjyk.jykdb.database import (
     JOUYOU_TABLE_ROW_NAMES,
     JOUYOU_TABLE_ROW_SCHEMA,
 )
-from libjyk.jykdb.pathing import JYK_DEFAULT_DB
 from libjyk.jouyou_kanji import JOUYOU_KANJI
 from libjyk.kanji import Kanji
 from libjyk.parser.kanjidic2 import parse_kanjidic2
-from libjyk.pathing import create_persistent_jyk_paths
+from libjyk.pathing import JYK_USER_DIR, create_persistent_jyk_paths
+
+
+JYK_DEFAULT_DB = os.path.join(JYK_USER_DIR, "jyk.db")
 
 
 def _kanji_to_row(kanji: Kanji) -> JOUYOU_TABLE_ROW_SCHEMA:
