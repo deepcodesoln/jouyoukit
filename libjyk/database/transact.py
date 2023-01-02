@@ -15,6 +15,7 @@ from libjyk.database.database import (
 )
 from libjyk.database.pathing import JYK_DEFAULT_DB
 from libjyk.kanji import Kanji
+from libjyk.kangxi_radicals import KANGXI_RADICALS
 
 
 """A list of school grades in which kanji are taught. 8 indicates secondary school."""
@@ -48,7 +49,7 @@ def _row_to_kanji(row: JOUYOU_TABLE_ROW_SCHEMA) -> Kanji:
     """
     return Kanji(
         row[0],
-        pickle.loads(row[1], fix_imports=False),
+        KANGXI_RADICALS[row[1] - 1],  # -1 since list is 0-based.
         pickle.loads(row[2], fix_imports=False),
         pickle.loads(row[3], fix_imports=False),
         pickle.loads(row[4], fix_imports=False),
@@ -80,6 +81,9 @@ def get_kanji_by_grade(grade: int, sort_by: Optional[str]) -> list[Kanji]:
     :type grade: int
     :param sort_by: The column name to sort query results by. `None` indicates no sort.
     :type sort_by: Optional[str]
+    :return: A list of instances of Kanji for a specific grade.
+    :rtype: list[Kanji]
+    :raises TableDoesNotExist: Raised if the required jouyou database does not exist.
     """
     assert grade in KANJI_GRADES, f"Unsupported grade: {grade}."
 

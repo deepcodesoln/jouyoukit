@@ -11,7 +11,7 @@ def test_parse_kanjidic2():
     kanjidic2_subset_pathname = join(dirname(__file__), "assets/kanjidic2_subset.xml")
     for k in parse_kanjidic2(kanjidic2_subset_pathname):
         assert k.kanji == "亜", "Unexpected kanji literal."
-        assert k.radical.radical == "二", "Unexpected radical."
+        assert k.radical == 7, "Unexpected radical code."
         assert k.onyomi[0].reading == "ア", "Unexpected on'yomi."
         assert k.kunyomi[0].reading == "つ", "Unexpected kun'yomi."
         assert k.meanings == [

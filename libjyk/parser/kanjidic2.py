@@ -2,7 +2,6 @@ import logging
 import xml
 import xml.etree.ElementTree as ET
 
-from libjyk.kangxi_radicals import KANGXI_RADICALS
 from libjyk.kanji import Kanji, Reading
 from libjyk.logging import LIBJYK_LOGGER_NAME
 
@@ -53,7 +52,7 @@ def _parse_kanji(e: xml.etree.ElementTree.Element) -> Kanji:
     radical = ""
     for rad in e.find("radical"):
         if rad.attrib["rad_type"] == "classical":  # Kangxi as opposed to Nelson.
-            radical = KANGXI_RADICALS[int(rad.text) - 1]  # List is 0-based.
+            radical = int(rad.text)
             break
 
     # Parse the grade and frequency.
