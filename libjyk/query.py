@@ -3,7 +3,7 @@ This module provides functions to query the collection of jouyou kanji for
 various information.
 """
 
-from libjyk.jouyou_kanji import JOUYOU_KANJI
+from libjyk.kanji import JOUYOU_KANJI
 
 
 def is_jouyou(character: str) -> bool:
