@@ -1,10 +1,10 @@
 from libjyk.jykdb.build import build
-from libjyk.jykdb.transact import TableDoesNotExist
-from libjyk.jykdb.transact import (
+from libjyk.query import (
     KANJI_GRADES,
     SUPPORTED_SORT,
     get_kanji,
     get_kanji_by_grade,
+    TableDoesNotExist,
 )
 from libjyk.format import SUPPORTED_FORMATS, kanji_list_to_csv, radical_list_to_csv
 
