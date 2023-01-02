@@ -5,6 +5,7 @@ from libjyk.query import (
     get_kanji,
     get_kanji_for_grade,
     get_radicals_for_grade,
+    get_radicals_unique_to_grade,
     TableDoesNotExist,
 )
 from libjyk.format import SUPPORTED_FORMATS, kanji_list_to_csv, radical_list_to_csv
@@ -26,7 +27,6 @@ def extend_args(subparsers):
         metavar="kanji",
         help="Search the database for a specific kanji",
     )
-    # TODO(orphen) Generalize query CLI: one command, various filters.
     actions.add_argument(
         "--get-kanji-for-grade",
         metavar="grade",
@@ -41,8 +41,16 @@ def extend_args(subparsers):
         metavar="grade",
         type=int,
         choices=KANJI_GRADES,
-        # Add `choices` in help text as we do for `--get-kanji-by-grade`.
+        # Add `choices` in help text as we do for `--get-kanji-for-grade`.
         help="Get all radicals used in a specific grade; choices: {KANJI_GRADES}",
+    )
+    actions.add_argument(
+        "--get-radicals-unique-to-grade",
+        metavar="grade",
+        type=int,
+        choices=KANJI_GRADES,
+        # Add `choices` in help text as we do for `--get-kanji-for-grade`.
+        help="Get all radicals unique to a specific grade; choices: {KANJI_GRADES}",
     )
 
     parser.add_argument(
@@ -81,6 +89,16 @@ def _main(args) -> int:
                     print(k)
         elif args.get_radicals_for_grade:
             radicals = get_radicals_for_grade(args.get_radicals_for_grade, args.sort_by)
+            if args.format_as == "csv":
+                out = radical_list_to_csv(radicals)
+                print(out)
+            else:
+                for r in radicals:
+                    print(r)
+        elif args.get_radicals_unique_to_grade:
+            radicals = get_radicals_unique_to_grade(
+                args.get_radicals_unique_to_grade, args.sort_by
+            )
             if args.format_as == "csv":
                 out = radical_list_to_csv(radicals)
                 print(out)
