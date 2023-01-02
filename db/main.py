@@ -3,7 +3,7 @@ from libjyk.query import (
     KANJI_GRADES,
     SUPPORTED_SORT,
     get_kanji,
-    get_kanji_by_grade,
+    get_kanji_for_grade,
     TableDoesNotExist,
 )
 from libjyk.format import SUPPORTED_FORMATS, kanji_list_to_csv, radical_list_to_csv
@@ -27,21 +27,21 @@ def extend_args(subparsers):
     )
     # TODO(orphen) Generalize query CLI: one command, various filters.
     actions.add_argument(
-        "--get-kanji-by-grade",
+        "--get-kanji-for-grade",
         metavar="grade",
         type=int,
         choices=KANJI_GRADES,
         # `choices` is not present in help text for items in mutually exclusive groups,
         # so we add it here.
-        help=f"Search the database for all kanji of a specific grade; choices: {KANJI_GRADES}",
+        help=f"Get all kanji of a specific grade; choices: {KANJI_GRADES}",
     )
     actions.add_argument(
-        "--get-radicals-for-level",
-        metavar="level",
+        "--get-radicals-for-grade",
+        metavar="grade",
         type=int,
         choices=KANJI_GRADES,
         # Add `choices` in help text as we do for `--get-kanji-by-grade`.
-        help="Get all unique radicals for all kanji by grade; choices: {KANJI_CHOICES}",
+        help="Get all radicals used in a specific grade; choices: {KANJI_GRADES}",
     )
 
     parser.add_argument(
@@ -70,19 +70,19 @@ def _main(args) -> int:
             kanji = get_kanji(args.query_kanji)
             out = kanji_list_to_csv([kanji]) if args.format_as == "csv" else kanji
             print(out)
-        elif args.get_kanji_by_grade:
-            kanji = get_kanji_by_grade(args.get_kanji_by_grade, args.sort_by)
+        elif args.get_kanji_for_grade:
+            kanji = get_kanji_for_grade(args.get_kanji_for_grade, args.sort_by)
             if args.format_as == "csv":
                 out = kanji_list_to_csv(kanji)
                 print(out)
             else:
                 for k in kanji:
                     print(k)
-        elif args.get_radicals_for_level:
+        elif args.get_radicals_for_grade:
             # TODO(orphen) Move this functionality into libjyk.
             # As we cannot search the database for radicals directly, we have to
             # operate on the list of all kanji for a specific grade.
-            kanji = get_kanji_by_grade(args.get_unique_radicals_for_level, args.sort_by)
+            kanji = get_kanji_for_grade(args.get_radicals_for_grade, args.sort_by)
             radicals = set()
             for k in kanji:
                 radicals.add(k.radical)

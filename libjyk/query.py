@@ -78,7 +78,7 @@ def get_kanji(literal: str) -> Optional[Kanji]:
     return _row_to_kanji(entry) if entry else None
 
 
-def get_kanji_by_grade(grade: int, sort_by: Optional[str]) -> list[Kanji]:
+def get_kanji_for_grade(grade: int, sort_by: Optional[str]) -> list[Kanji]:
     """
     :param grade: The grade to filter kanji by. Must be one of KANJI_GRADES.
     :type grade: int
