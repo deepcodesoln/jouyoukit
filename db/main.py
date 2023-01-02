@@ -1,4 +1,4 @@
-from libjyk.jykdb.build import build
+import libjyk.jykdb
 from libjyk.query import (
     KANJI_GRADES,
     SUPPORTED_SORT,
@@ -65,7 +65,7 @@ def _main(args) -> int:
     """
     try:
         if args.build:
-            build(args.build)
+            jykdb.build(args.build)
         elif args.query_kanji:
             kanji = get_kanji(args.query_kanji)
             out = kanji_list_to_csv([kanji]) if args.format_as == "csv" else kanji

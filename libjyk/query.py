@@ -8,7 +8,7 @@ import pickle
 import sqlite3
 from typing import Optional
 
-from libjyk.jykdb.build import (
+from libjyk.jykdb import (
     JOUYOU_TABLE_NAME,
     JOUYOU_TABLE_ROW_SCHEMA,
     JYK_DEFAULT_DB,

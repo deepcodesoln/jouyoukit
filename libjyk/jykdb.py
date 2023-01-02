@@ -1,3 +1,5 @@
+"""This module contains code to build the persistent libjyk jouyou kanji database."""
+
 import os
 import pickle
 import sqlite3
