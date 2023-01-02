@@ -2,11 +2,6 @@ import os
 import pickle
 import sqlite3
 
-from libjyk.jykdb.database import (
-    JOUYOU_TABLE_NAME,
-    JOUYOU_TABLE_ROW_NAMES,
-    JOUYOU_TABLE_ROW_SCHEMA,
-)
 from libjyk.jouyou_kanji import JOUYOU_KANJI
 from libjyk.kanji import Kanji
 from libjyk.parser.kanjidic2 import parse_kanjidic2
@@ -14,6 +9,24 @@ from libjyk.pathing import JYK_USER_DIR, create_persistent_jyk_paths
 
 
 JYK_DEFAULT_DB = os.path.join(JYK_USER_DIR, "jyk.db")
+JOUYOU_TABLE_NAME = "jouyou"
+
+"""
+The schema for a row in the jouyou table. The columns follow the order of names in
+JOUYOU_TABLE_ROW_NAMES. The bytes columns are pickle-serialized data.
+"""
+JOUYOU_TABLE_ROW_SCHEMA = tuple[str, int, bytes, bytes, bytes, int, int]
+
+"""The names of each column of a row in JOUYOU_TABLE_NAME."""
+JOUYOU_TABLE_ROW_NAMES = [
+    "kanji",
+    "kangxi_radical",
+    "onyomi",
+    "kunyomi",
+    "meanings",
+    "grade",
+    "frequency",
+]
 
 
 def _kanji_to_row(kanji: Kanji) -> JOUYOU_TABLE_ROW_SCHEMA:

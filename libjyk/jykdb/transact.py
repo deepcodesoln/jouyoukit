@@ -8,14 +8,17 @@ import pickle
 import sqlite3
 from typing import Optional
 
-from libjyk.jykdb.database import (
+from libjyk.jykdb.build import (
     JOUYOU_TABLE_NAME,
     JOUYOU_TABLE_ROW_SCHEMA,
-    TableDoesNotExist,
+    JYK_DEFAULT_DB,
 )
-from libjyk.jykdb.build import JYK_DEFAULT_DB
 from libjyk.kanji import Kanji
 from libjyk.kangxi_radicals import KANGXI_RADICALS
+
+
+class TableDoesNotExist(Exception):
+    pass
 
 
 """A list of school grades in which kanji are taught. 8 indicates secondary school."""

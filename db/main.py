@@ -1,5 +1,5 @@
 from libjyk.jykdb.build import build
-from libjyk.jykdb.database import TableDoesNotExist
+from libjyk.jykdb.transact import TableDoesNotExist
 from libjyk.jykdb.transact import (
     KANJI_GRADES,
     SUPPORTED_SORT,
