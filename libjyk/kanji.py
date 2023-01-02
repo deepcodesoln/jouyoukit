@@ -2,7 +2,7 @@
 
 from typing import NamedTuple, Optional
 
-from libjyk.kangxi_radicals import Radical
+from libjyk.radicals import Radical
 
 
 class Reading(NamedTuple):

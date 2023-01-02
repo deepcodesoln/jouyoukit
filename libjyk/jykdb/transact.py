@@ -14,7 +14,7 @@ from libjyk.jykdb.build import (
     JYK_DEFAULT_DB,
 )
 from libjyk.kanji import Kanji
-from libjyk.kangxi_radicals import KANGXI_RADICALS
+from libjyk.radicals import KANGXI_RADICALS
 
 
 class TableDoesNotExist(Exception):

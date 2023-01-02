@@ -2,7 +2,7 @@ import csv
 from io import StringIO
 
 from libjyk.kanji import Kanji
-from libjyk.kangxi_radicals import Radical
+from libjyk.radicals import Radical
 
 
 """A list of supported tool output formats."""

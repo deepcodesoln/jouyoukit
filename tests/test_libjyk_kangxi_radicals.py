@@ -1,4 +1,4 @@
-from libjyk.kangxi_radicals import KANGXI_RADICALS
+from libjyk.radicals import KANGXI_RADICALS
 
 
 def test_kangxi_radicals():
