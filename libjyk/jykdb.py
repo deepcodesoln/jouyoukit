@@ -12,7 +12,7 @@ from libjyk.pathing import JYK_USER_DIR, create_persistent_jyk_paths
 from libjyk.radicals import KANGXI_RADICALS
 
 
-JYK_DEFAULT_DB = os.path.join(JYK_USER_DIR, "jyk.db")
+JYK_DEFAULT_DB = os.path.expanduser(os.path.join(JYK_USER_DIR, "jyk.db"))
 JOUYOU_TABLE_NAME = "jouyou"
 
 """
@@ -94,7 +94,7 @@ def _build(kanjidic2_xml_pathname: str, database_pathname: Optional[str]):
     """
     if not database_pathname:
         create_persistent_jyk_paths()
-        database_pathname = os.path.expanduser(JYK_DEFAULT_DB)
+        database_pathname = JYK_DEFAULT_DB
     conn = sqlite3.connect(database_pathname)
     cursor = conn.cursor()
 

@@ -3,7 +3,6 @@ This module provides functions to query the collection of jouyou kanji for
 various information.
 """
 
-import os
 import pickle
 import sqlite3
 from typing import Optional
@@ -44,6 +43,20 @@ def _assert_table_exists(conn):
     raise TableDoesNotExist()
 
 
+def _get_db_connection():
+    """
+    Get a connection to the backing libjyk database. This function exists so that tests
+    can patch it to get connections on databases other than that specified by
+    JYK_DEFAULT_DB.
+    :return: A connection to a backing database on disk.
+    :rtype: sqlite3.Connection
+    :raises TableDoesNotExist: Raised if the required jouyou database does not exist.
+    """
+    conn = sqlite3.connect(JYK_DEFAULT_DB)
+    _assert_table_exists(conn)
+    return conn
+
+
 def get_kanji(literal: str) -> Optional[Kanji]:
     """
     :param literal: The kanji literal to search for.
@@ -52,9 +65,7 @@ def get_kanji(literal: str) -> Optional[Kanji]:
     :rtype: Optional[Kanji]
     :raises TableDoesNotExist: Raised if the required jouyou database does not exist.
     """
-    conn = sqlite3.connect(os.path.expanduser(JYK_DEFAULT_DB))
-    _assert_table_exists(conn)
-
+    conn = _get_db_connection()
     cursor = conn.cursor()
     res = cursor.execute(f"SELECT * from {JOUYOU_TABLE_NAME} WHERE kanji='{literal}'")
     entry = res.fetchone()
@@ -73,9 +84,7 @@ def get_kanji_for_grade(grade: int, sort_by: Optional[str]) -> list[Kanji]:
     """
     assert grade in KANJI_GRADES, f"Unsupported grade: {grade}."
 
-    conn = sqlite3.connect(os.path.expanduser(JYK_DEFAULT_DB))
-    _assert_table_exists(conn)
-
+    conn = _get_db_connection()
     cursor = conn.cursor()
     sort = f"ORDER BY IFNULL({sort_by}, 9999)" if sort_by else ""
     res = cursor.execute(
@@ -96,9 +105,7 @@ def get_radicals_for_grade(grade: int, sort_by: Optional[str]) -> list[Radical]:
     """
     assert grade in KANJI_GRADES, f"Unsupported grade: {grade}."
 
-    conn = sqlite3.connect(os.path.expanduser(JYK_DEFAULT_DB))
-    _assert_table_exists(conn)
-
+    conn = _get_db_connection()
     cursor = conn.cursor()
     sort = f"ORDER BY IFULL({sort_by}, 9999)" if sort_by else ""
     res = cursor.execute(
@@ -119,9 +126,7 @@ def get_radicals_unique_to_grade(grade: int, sort_by: Optional[str]) -> list[Rad
     """
     assert grade in KANJI_GRADES, f"Unsupported grade: {grade}."
 
-    conn = sqlite3.connect(os.path.expanduser(JYK_DEFAULT_DB))
-    _assert_table_exists(conn)
-
+    conn = _get_db_connection()
     cursor = conn.cursor()
     sort = f"ORDER BY IFULL({sort_by}, 9999)" if sort_by else ""
 
@@ -151,9 +156,7 @@ def get_radicals_introduced_in_grade(
     """
     assert grade in KANJI_GRADES, f"Unsupported grade: {grade}."
 
-    conn = sqlite3.connect(os.path.expanduser(JYK_DEFAULT_DB))
-    _assert_table_exists(conn)
-
+    conn = _get_db_connection()
     cursor = conn.cursor()
     sort = f"ORDER BY IFULL({sort_by}, 9999)" if sort_by else ""
 
