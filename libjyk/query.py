@@ -12,6 +12,7 @@ from libjyk.jykdb import (
     JOUYOU_TABLE_NAME,
     JOUYOU_TABLE_ROW_SCHEMA,
     JYK_DEFAULT_DB,
+    row_to_kanji,
 )
 from libjyk.kanji import JOUYOU_KANJI, Kanji
 from libjyk.radicals import KANGXI_RADICALS, Radical
@@ -43,24 +44,6 @@ def _assert_table_exists(conn):
     raise TableDoesNotExist()
 
 
-def _row_to_kanji(row: JOUYOU_TABLE_ROW_SCHEMA) -> Kanji:
-    """
-    :param row: A row from JOUYOU_TABLE_NAME.
-    :type row: JOUYOU_TABLE_KANJI_SCHEMA.
-    :return: The database row represented as a Kanji instance.
-    :rtype: Kanji
-    """
-    return Kanji(
-        row[0],
-        KANGXI_RADICALS[row[1] - 1],  # -1 since list is 0-based.
-        pickle.loads(row[2], fix_imports=False),
-        pickle.loads(row[3], fix_imports=False),
-        pickle.loads(row[4], fix_imports=False),
-        row[5],
-        row[6],
-    )
-
-
 def get_kanji(literal: str) -> Optional[Kanji]:
     """
     :param literal: The kanji literal to search for.
@@ -75,7 +58,7 @@ def get_kanji(literal: str) -> Optional[Kanji]:
     cursor = conn.cursor()
     res = cursor.execute(f"SELECT * from {JOUYOU_TABLE_NAME} WHERE kanji='{literal}'")
     entry = res.fetchone()
-    return _row_to_kanji(entry) if entry else None
+    return row_to_kanji(entry) if entry else None
 
 
 def get_kanji_for_grade(grade: int, sort_by: Optional[str]) -> list[Kanji]:
@@ -98,7 +81,7 @@ def get_kanji_for_grade(grade: int, sort_by: Optional[str]) -> list[Kanji]:
     res = cursor.execute(
         f"SELECT * from {JOUYOU_TABLE_NAME} WHERE grade={grade} {sort}"
     )
-    return [_row_to_kanji(r) for r in res.fetchall()]
+    return [row_to_kanji(r) for r in res.fetchall()]
 
 
 def get_radicals_for_grade(grade: int, sort_by: Optional[str]) -> list[Radical]:

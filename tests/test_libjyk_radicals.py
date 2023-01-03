@@ -1,7 +1,7 @@
 from libjyk.radicals import KANGXI_RADICALS
 
 
-def test_kangxi_radicals():
+def test_select_kangxi_radicals():
     """
     Look up some radicals to make sure that their index matches their Kangxi radical
     number. Remember that `KANGXI_RADICALS` is 0-based whereas radical numbers are
@@ -18,3 +18,11 @@ def test_kangxi_radicals():
     assert KANGXI_RADICALS[139].radical == "艸", "Unexpected index for 艸."
     assert KANGXI_RADICALS[168].radical == "門", "Unexpected index for 門."
     assert KANGXI_RADICALS[204].radical == "黽", "Unexpected index for 黽."
+
+
+def test_kangxi_radical_order():
+    """
+    Make sure the list of Kangxi radicals has monotonically-increasing radical numbers.
+    """
+    for i, r in enumerate(KANGXI_RADICALS):
+        assert r.number - 1 == i

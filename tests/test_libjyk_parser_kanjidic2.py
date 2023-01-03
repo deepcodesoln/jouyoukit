@@ -1,6 +1,7 @@
 from os.path import dirname, join
 
 from libjyk.parser.kanjidic2 import parse_kanjidic2
+from tests.utils import assert_ichi
 
 
 def test_parse_kanjidic2():
@@ -18,11 +19,4 @@ def test_parse_kanjidic2():
         assert k.kanji in expected_kanji, "Unexpected kanji in the kanjidic2 subset."
 
         if k.kanji == "一":
-            assert k.radical == 1
-            onyomi = [r.reading for r in k.onyomi]
-            assert onyomi == ["イチ", "イツ"], "Unexpected on'yomi."
-            kunyomi = [r.reading for r in k.kunyomi]
-            assert kunyomi == ["ひと-", "ひと"], "Unexpected kun'yomi."
-            assert k.meanings == ["one", "one radical (no.1)"], "Unexpected meanings."
-            assert k.grade == 1, "Unexpected grade."
-            assert k.frequency == 2, "Unexpected frequency."
+            assert_ichi(k)
