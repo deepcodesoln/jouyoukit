@@ -126,7 +126,7 @@ def build(kanjidic2_xml_pathname: str):
         built using content from this file.
     :type kanjidic2_xml_pathname: str
     """
-    num_db_entries = _build(kanjidic2_xml_pathname)
+    num_db_entries = _build(kanjidic2_xml_pathname, None)
     assert num_db_entries == len(
         JOUYOU_KANJI
     ), "Unexpected number of kanji in database."
