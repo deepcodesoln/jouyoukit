@@ -43,7 +43,7 @@ def extend_args(subparsers):
         type=int,
         choices=KANJI_GRADES,
         # Add `choices` in help text as we do for `--get-kanji-for-grade`.
-        help="Get all radicals used in a specific grade; choices: {KANJI_GRADES}",
+        help=f"Get all radicals used in a specific grade; choices: {KANJI_GRADES}",
     )
     actions.add_argument(
         "--get-radicals-unique-to-grade",
@@ -51,7 +51,7 @@ def extend_args(subparsers):
         type=int,
         choices=KANJI_GRADES,
         # Add `choices` in help text as we do for `--get-kanji-for-grade`.
-        help="Get all radicals unique to a specific grade; choices: {KANJI_GRADES}",
+        help=f"Get all radicals unique to a specific grade; choices: {KANJI_GRADES}",
     )
     actions.add_argument(
         "--get-radicals-introduced-in-grade",
@@ -61,7 +61,7 @@ def extend_args(subparsers):
         # Add `choices` in help text as we do for `--get-kanji-for-grade`.
         help=(
             "Get all radicals new to some grade relative to all grades before; "
-            + "choices: {KANJI_GRADES}"
+            + f"choices: {KANJI_GRADES}"
         ),
     )
     parser.add_argument(
