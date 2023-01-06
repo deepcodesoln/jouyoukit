@@ -104,12 +104,12 @@ def _main(args) -> int:
             jykdb.build(args.build)
         elif args.query_kanji:
             kanji = get_kanji(args.query_kanji)
-            out = kanji_list_to_csv([kanji]) if args.format_as == "csv" else kanji
+            out = kanji_list_to_csv([kanji], None) if args.format_as == "csv" else kanji
             print(out)
         elif args.get_kanji_for_grade:
             kanji = get_kanji_for_grade(args.get_kanji_for_grade, args.sort_by)
             if args.format_as == "csv":
-                out = kanji_list_to_csv(kanji)
+                out = kanji_list_to_csv(kanji, args.get_kanji_for_grade)
                 print(out)
             else:
                 for k in kanji:
@@ -117,7 +117,7 @@ def _main(args) -> int:
         elif args.get_radicals_for_grade:
             radicals = get_radicals_for_grade(args.get_radicals_for_grade, args.sort_by)
             if args.format_as == "csv":
-                out = radical_list_to_csv(radicals)
+                out = radical_list_to_csv(radicals, args.get_radicals_for_grade)
                 print(out)
             else:
                 for r in radicals:
@@ -127,7 +127,7 @@ def _main(args) -> int:
                 args.get_radicals_unique_to_grade, args.sort_by
             )
             if args.format_as == "csv":
-                out = radical_list_to_csv(radicals)
+                out = radical_list_to_csv(radicals, args.get_radicals_unique_to_grade)
                 print(out)
             else:
                 for r in radicals:
@@ -137,7 +137,9 @@ def _main(args) -> int:
                 args.get_radicals_introduced_in_grade, args.sort_by
             )
             if args.format_as == "csv":
-                out = radical_list_to_csv(radicals)
+                out = radical_list_to_csv(
+                    radicals, args.get_radicals_introduced_in_grade
+                )
                 print(out)
             else:
                 for r in radicals:
