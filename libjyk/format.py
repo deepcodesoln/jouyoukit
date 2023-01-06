@@ -9,10 +9,18 @@ from libjyk.radicals import Radical
 SUPPORTED_FORMATS = ["csv"]
 
 
+def radical_csv_header() -> list[str]:
+    """
+    :return: A list of column headers for radicals represented as CSV.
+    :rtype: list[str]
+    """
+    return ["radical", "variants", "meanings", "number"]
+
+
 def radical_list_to_csv(radicals: list[Radical]) -> str:
     """
-    Convert a list of Radical instances into CSV text. The text has the row schema:
-        radical, variants, meanings
+    Convert a list of Radical instances into CSV text. The row schema is that provided by
+    `radical_csv_header`.
 
     :param radicals: A list of Radical instances to convert to CSV.
     :type radicals: list[Radical]
@@ -28,6 +36,7 @@ def radical_list_to_csv(radicals: list[Radical]) -> str:
                 r.radical,
                 ", ".join([v for v in r.variants]),
                 ", ".join([m for m in r.meanings]),
+                r.number,
             ]
         )
 
@@ -36,10 +45,18 @@ def radical_list_to_csv(radicals: list[Radical]) -> str:
     return s
 
 
+def kanji_csv_header() -> list[str]:
+    """
+    :return: A list of column headers for Kanji represented as CSV.
+    :rtype: list[str]
+    """
+    return ["kanji", "radical", "onyomi", "kunyomi", "meanings", "grade", "frequency"]
+
+
 def kanji_list_to_csv(kanji: list[Kanji]) -> str:
     """
-    Convert a list of Kanji instances into CSV text. The text has the row schema:
-        kanji, radical, on'yomi, kun'yomi, meanings, grade, frequency
+    Convert a list of Kanji instances into CSV text. The row schema is that provided by
+    `kanji_csv_header`.
 
     :param kanji: A list of Kanji instances to convert to CSV.
     :type kanji: list[Kanji]

@@ -9,7 +9,13 @@ from libjyk.query import (
     get_radicals_introduced_in_grade,
     TableDoesNotExist,
 )
-from libjyk.format import SUPPORTED_FORMATS, kanji_list_to_csv, radical_list_to_csv
+from libjyk.format import (
+    SUPPORTED_FORMATS,
+    kanji_csv_header,
+    kanji_list_to_csv,
+    radical_csv_header,
+    radical_list_to_csv,
+)
 
 
 def extend_args(subparsers):
@@ -64,15 +70,25 @@ def extend_args(subparsers):
             + f"choices: {KANJI_GRADES}"
         ),
     )
+    actions.add_argument(
+        "--print-kanji-csv-header",
+        action="store_true",
+        help="Print the column headers for kanji represented as CSV",
+    )
+    actions.add_argument(
+        "--print-radical-csv-header",
+        action="store_true",
+        help="Print the column headers for radicals represented as CSV",
+    )
     parser.add_argument(
         "--sort-by",
         choices=SUPPORTED_SORT,
-        help="The kanji property to sort by for queries that return more than 1 result",
+        help="The kanji property to sort by for kanji queries that return more than 1 result",
     )
     parser.add_argument(
         "--format-as",
         choices=SUPPORTED_FORMATS,
-        help="Convert tool output to a particular format",
+        help="Convert particular tool output to a particular format",
     )
 
     parser.set_defaults(func=_main)
@@ -126,6 +142,10 @@ def _main(args) -> int:
             else:
                 for r in radicals:
                     print(r)
+        elif args.print_kanji_csv_header:
+            print(kanji_csv_header())
+        elif args.print_radical_csv_header:
+            print(radical_csv_header())
     except TableDoesNotExist:
         print("The jouyou toolkit database does not exist. Try `jyk.py db --build`.")
         return 1
