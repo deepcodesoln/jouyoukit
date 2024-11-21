@@ -1,44 +1,14 @@
-"""This modules provides information on the Kangxi radicals."""
+class Radical():
+    def __init__(self, char: str, variants: list[str], meanings: list[str], num: int):
+        self.char = char
+        self.variants = variants
+        self.meanings = meanings
+        self.num = num
 
-from typing import NamedTuple
+    def __repr__(self):
+        return f"{self.char}; variants: {self.variants}; meanings: {self.meanings}; num: {self.num}"
 
-
-class Radical(NamedTuple):
-    """Information on a single radical which may have multiple variants and meanings."""
-
-    radical: str
-    variants: list[str]
-    meanings: list[str]
-    number: int  # The official ID of the radical.
-
-    def __str__(self):
-        variants = f"({', '.join(self.variants)}) " if self.variants else ""
-        return f"{self.radical} {variants}({', '.join(self.meanings)}) #{self.number}"
-
-    def __hash__(self):
-        s = self.radical
-        for v in self.variants:
-            s += v
-        for m in self.meanings:
-            s += m
-        s += str(self.number)
-        return hash(s)
-
-    def __eq__(self, other):
-        return all(
-            (
-                self.radical == other.radical,
-                self.variants == other.variants,
-                self.meanings == other.meanings,
-                self.number == other.number,
-            )
-        )
-
-
-"""
-A list of Kangxi radicals where the index in the list corresponds to the official
-radical number.
-"""
+# (index + 1) corresponds to the official radical number.
 KANGXI_RADICALS = [
     Radical("一", [], ["one"], 1),
     Radical("丨", [], ["line"], 2),

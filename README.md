@@ -1,46 +1,30 @@
-# 常用キット
+# 常用キット (jouyoukit)
 
-The Jouyou Kit (`jyk`) is a toolkit for querying information about the
-[jouyou kanji](https://en.wikipedia.org/wiki/J%C5%8Dy%C5%8D_kanji).
+jouyoukit is a Python utility that extracts
+[jouyou](https://en.wikipedia.org/wiki/J%C5%8Dy%C5%8D_kanji) kanji and related
+vocabulary from popular, free Japanese dictionaries.
 
-# Usage
+## Usage
 
-This library requires Python 3.9 or newer.
+Tested with Python 3.13. You will need the KANJIDIC2 XML database, available
+[here](http://www.edrdg.org/wiki/index.php/KANJIDIC_Project), and the JMdict XML
+database, available
+[here](http://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project).
 
-Make calls into the library:
-
-```py
-from libjyk import query
-
-query.is_jouyou("猫")
-```
-
-Use the CLI:
+First, build a local jouyou kanji JSON database and then emit the jouyou kanji
+as CSV as shown below.
 
 ```
-python3 jyk.py -h
-
-python3 jyk.py db --build path/to/kanjidic2.xml
-python3 jyk.py db --query-kanji 猫
+$ python3 jyk.py build_db kanjidic2.xml JMdict_e.xml
+$ python3 jyk.py db_to_csv
 ```
 
-# Development
+## Development
 
-Install the development requirements, and then set up the pre-commit hooks.
+Dependencies: none.
 
-```
-pip install -r requirements.dev.txt
-pre-commit install
-```
+Tests: none.
 
-## Running Tests
+## License
 
-Run `pytest` as a module to make sure you use the correct Python version.
-
-```
-python3 -m pytest tests
-```
-
-# License
-
-[MIT license](./LICENSE.md).
+[MIT License](./LICENSE.md).
