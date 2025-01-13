@@ -134,13 +134,13 @@ def to_csv_file(kanji: list[Kanji], csv_filename):
                 ", ".join(v2_meanings)
             ])
 
-def kanji_for_grade(kanji: list[Kanji], grade: int) -> list[Kanji]:
-    return [k for k in kanji if k.grade == grade]
-
 def db_to_csv(_args):
     with open(DB_FILE, "r") as f:
         jk = json.load(f)
     kanji = [Kanji.from_json(kanji_json) for kanji_json in jk]
+
+    def kanji_for_grade(kanji: list[Kanji], grade: int) -> list[Kanji]:
+        return [k for k in kanji if k.grade == grade]
 
     # Split kanji by grades, sort by frequency.
     k1 = sorted(kanji_for_grade(kanji, 1), key=lambda k: k.frequency)
@@ -177,7 +177,7 @@ def main():
     db_builder.set_defaults(func=build_db)
 
     csv_builder = subparsers.add_parser(
-        "db_to_csv", help="Convert a local JSON dictionary into CSV"
+        "db_to_csv", help="Convert a local JSON dictionary into CSV files by level"
     )
     csv_builder.set_defaults(func=db_to_csv)
 
