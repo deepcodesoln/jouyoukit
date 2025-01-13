@@ -1,5 +1,3 @@
-import json
-
 class Vocabulary():
     def __init__(self, term: str, readings: list[str], meanings: list[str]):
         self.term = term
