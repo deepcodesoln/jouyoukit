@@ -1,0 +1,7 @@
+[project]
+name = "jouyoukit"
+version = "0.1.0"
+description = "A tool for extracting jouyou kanji and vocabulary from dictionaries"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
