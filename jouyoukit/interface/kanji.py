@@ -1,7 +1,7 @@
 import json
 
-from interface.radical import Radical
-from interface.vocabulary import Vocabulary
+from jouyoukit.interface.radical import Radical
+from jouyoukit.interface.vocabulary import Vocabulary
 
 class Kanji:
     def __init__(
